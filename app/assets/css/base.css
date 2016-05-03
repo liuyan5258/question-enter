@@ -29,6 +29,10 @@ textarea,input[type="password"],input[type="text"]{
   word-wrap: break-word;  
   background: #fff;
 }
+select {
+  -webkit-appearance: none;
+  background: none;
+}
 input:focus,
 select:focus,
 textarea:focus,

@@ -15,7 +15,7 @@ const router = new VueRouter()
 // 路由map 
 router.map({ 
   '/Home': { 
-    component: Home 
+    component: Home
   } 
 }) 
 router.redirect({ 

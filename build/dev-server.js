@@ -43,8 +43,8 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 // serve pure static assets
 // app.use('./static', express.static('./static'))
-// 监听 8888端口，开启服务器
-app.listen(8888,
+// 监听 9000端口，开启服务器
+app.listen(9000,
 function(err) {
   if (err) {
     console.log(err) 

@@ -17,7 +17,7 @@ module.exports = {
   output: {
     // 输出路径是 myProject/test/static
     path: path.resolve(__dirname, '../test/static'),
-    publicPath: 'static/',
+    publicPath: 'http://t.c.m.163.com/ly/question_enter',
     filename: 'js/[name].[hash].js',
     chunkFilename: '[id].[chunkhash].js'
   },
