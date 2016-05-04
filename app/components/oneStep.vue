@@ -4,10 +4,8 @@
     <div class="form-header">
       <label>设置头像</label>
       <!-- <img id="header" src="http://t.c.m.163.com/newsapp/default_header.png" alt="" @click="onPhoto"> -->
-      <input v-model="model.header" v-form-ctrl required name="header" :style="{background: model.header ? 'url(' + model.header + ')' : 'url(http://t.c.m.163.com/newsapp/default_header.png)', backgroundSize: 'cover'}" @click="onPhoto" v-on:blur="onBlur"/>
-      <form action="http://upfile.m.163.com/nos/upload/pub" id="iosupload" target="iosupload" enctype="multipart/form-data" method="POST" style="display:none;">
-        <input type="file" accept="image/*" name="abc" id="inputFile">
-      </form>
+      <input v-model="model.header" v-form-ctrl required name="header" :style="{background: model.header ? 'url(' + model.header + ')' : 'url(http://t.c.m.163.com/newsapp/default_header.png)', backgroundSize: 'cover'}" @click="onPhoto"/>
+      <input type="file" accept="image/*" v-model="model.header" v-form-ctrl name="header" id="inputFile" style="display:none" v-on:change="onFileChange">
     </div>
     <div :class="{invalidText: isUsername}">
       <label>申请人姓名</label>
@@ -26,6 +24,7 @@
       <textarea rows="7" v-model="model.intro" v-form-ctrl name="intro" required min="2" max="200" placeholder="请输入不超过200字的个人介绍" autocomplete="off" v-on:blur="onBlur"></textarea>
     </div>
     <button class="next-step" type="submit" :style="{background: myform.$valid ? '#df3031' : '#b0b0b0'}">下一步</button> 
+    <pre>{{postResults | json}}</pre>
   </div>
 </template>
 <script>
@@ -36,10 +35,12 @@ export default {
       model: {
         header: ''
       },
+      postResults: [],
       isUsername: false,
       isProfession: false,
       isContact: false,
-      isIntro: false
+      isIntro: false,
+      formData: []
     }
   },
   computed: {
@@ -56,7 +57,7 @@ export default {
         this.isIntro = !this.myform.intro.$error.required && !this.myform.intro.$valid
 
         // 顶部错误提示
-        if (!this.myform.header.$error.required) {
+        if (!this.myform.header.$valid) {
           that.isfocus = true
           that.errorMsg = '请上传头像'
         } 
@@ -87,10 +88,6 @@ export default {
       var isAndroid = navigator.userAgent.match(/android/ig)
       var isIos = navigator.userAgent.match(/iphone|ipod|ipad/ig)
       var iframe = this.$el.querySelector('#iframe')
-      var img = this.$el.querySelector('#header')
-      
-      var inputFile = this.$el.querySelector('#inputFile')
-      var iosupload = this.$el.querySelector('#iosupload')
 
       // Android下获取相册图片
       if(isAndroid) {
@@ -100,14 +97,28 @@ export default {
           that.model.header = r
         }
       }else {
-        inputFile.onchange = function () {
-          var file = this.files[0]
-          if (file && /image\/\w+/.test(file.type) ) {
-            iosupload.submit()
-          }
-        }
         inputFile.click()
       }
+    },
+    onFileChange: function (e) {
+      e.preventDefault()
+      var inputFile = this.$el.querySelector('#inputFile')
+      var file = inputFile.files[0]
+      // this.$http.post('http://upfile.m.163.com/nos/upload/pub', {
+      //   files: file
+      // }, function (data, status, request) {
+      //   this.postResults = data
+      //   this.model.header = data.url
+      // });
+
+      var formData = new FormData()
+      formData.append('files', file)
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'http://upfile.m.163.com/nos/upload/pub', true);
+      xhr.onload = function(e) {
+        this.postResults = this.response
+      }
+      xhr.send(formData);
     }
   }
 }

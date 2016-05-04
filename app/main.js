@@ -11,6 +11,9 @@ Vue.use(VueResource)
 Vue.use(VueRouter) 
 Vue.use(AjaxFormComponent)
 
+Vue.http.options.emulateJSON = true
+Vue.http.headers.Origin = 'http://www.163.com'
+
 const router = new VueRouter() 
 // 路由map 
 router.map({ 
