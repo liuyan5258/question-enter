@@ -5,7 +5,7 @@
       <label>设置头像</label>
       <!-- <img id="header" src="http://t.c.m.163.com/newsapp/default_header.png" alt="" @click="onPhoto"> -->
       <input v-model="model.header" v-form-ctrl required name="header" :style="{background: model.header ? 'url(' + model.header + ')' : 'url(http://t.c.m.163.com/newsapp/default_header.png)', backgroundSize: 'cover'}" @click="onPhoto"/>
-      <input type="file" accept="image/*" v-model="model.header" v-form-ctrl name="header" id="inputFile" style="display:none" v-on:change="onFileChange">
+      <input type="file" accept="image/*" v-model="model.header" v-form-ctrl name="header" id="inputFile" v-on:change="onFileChange" style="display:none">
     </div>
     <div :class="{invalidText: isUsername}">
       <label>申请人姓名</label>
@@ -43,13 +43,11 @@ export default {
       formData: []
     }
   },
-  computed: {
-    
-  },
   methods: {     
-    onBlur: function () {
-      var that = this.$parent
-      if(!that.isfocus) {
+    onBlur() {
+      let that = this.$parent
+      if (!that.isfocus) {
+
         // 输入框的错误状态  
         this.isUsername = !this.myform.username.$error.required && !this.myform.username.$valid
         this.isProfession = !this.myform.profession.$error.required && !this.myform.profession.$valid
@@ -80,45 +78,44 @@ export default {
       }
       
       // 3秒后隐藏错误提示
-      setTimeout((function(){
+      setTimeout((() => {
         that.isfocus = false
-      }).bind(this),3000)
+      }).bind(this), 3000)
     },
-    onPhoto: function () {
-      var isAndroid = navigator.userAgent.match(/android/ig)
-      var isIos = navigator.userAgent.match(/iphone|ipod|ipad/ig)
-      var iframe = this.$el.querySelector('#iframe')
+    onPhoto() {
+      const isAndroid = navigator.userAgent.match(/android/ig)
+      const isIos = navigator.userAgent.match(/iphone|ipod|ipad/ig)
+      const iframe = this.$el.querySelector('#iframe')
 
       // Android下获取相册图片
-      if(isAndroid) {
-        var that = this
+      if (isAndroid) {
+        let that = this
         iframe.src = 'uploadimage://album/100_100'
-        window.__newsapp_upload_image_done = function (r) {
+        window.__newsapp_upload_image_done = (r) => {
           that.model.header = r
         }
-      }else {
+      } else {
         inputFile.click()
       }
     },
-    onFileChange: function (e) {
+    onFileChange(e) {
       e.preventDefault()
-      var inputFile = this.$el.querySelector('#inputFile')
-      var file = inputFile.files[0]
-      // this.$http.post('http://upfile.m.163.com/nos/upload/pub', {
-      //   files: file
-      // }, function (data, status, request) {
-      //   this.postResults = data
-      //   this.model.header = data.url
-      // });
-
-      var formData = new FormData()
+      const inputFile = this.$el.querySelector('#inputFile')
+      const file = inputFile.files[0]
+      let formData = new FormData()
       formData.append('files', file)
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://upfile.m.163.com/nos/upload/pub', true);
-      xhr.onload = function(e) {
-        this.postResults = this.response
-      }
-      xhr.send(formData);
+      
+      this.$http.post('http://upfile.m.163.com/nos/upload/pub', formData, function (data, status, request) {
+        this.postResults = data
+        this.model.header = data.url
+      });
+
+      // var xhr = new XMLHttpRequest();
+      // xhr.open('POST', 'http://upfile.m.163.com/nos/upload/pub', true);
+      // xhr.onload = function(e) {
+      //   this.postResults = this.response
+      // }
+      // xhr.send(formData);
     }
   }
 }

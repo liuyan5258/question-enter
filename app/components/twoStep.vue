@@ -38,13 +38,10 @@ export default {
       isBoardText: false
     }
   },
-  computed: {
-    
-  },
   methods: {     
-    onBlur: function () {
-      var that = this.$parent
-      if(!that.isfocus) {
+    onBlur() {
+      let that = this.$parent
+      if (!that.isfocus) {
         // 输入框的错误状态  
         this.isTitle = !this.myform.title.$error.required && !this.myform.title.$valid
         this.isBoardText = !this.myform.boardText.$error.required && !this.myform.boardText.$valid
@@ -61,33 +58,22 @@ export default {
       }
       
       // 3秒后隐藏错误提示
-      setTimeout((function(){
+      setTimeout((() => {
         that.isfocus = false
-      }).bind(this),3000)
+      }).bind(this), 3000)
     },
-    onPhoto: function () {
-      var isAndroid = navigator.userAgent.match(/android/ig)
-      var isIos = navigator.userAgent.match(/iphone|ipod|ipad/ig)
-      var iframe = this.$el.querySelector('#iframe')
-      var img = this.$el.querySelector('#header')
-      
-      var inputFile = this.$el.querySelector('#inputFile')
-      var iosupload = this.$el.querySelector('#iosupload')
+    onPhoto() {
+      const isAndroid = navigator.userAgent.match(/android/ig)
+      const isIos = navigator.userAgent.match(/iphone|ipod|ipad/ig)
+      const iframe = this.$el.querySelector('#iframe')
 
       // Android下获取相册图片
-      if(isAndroid) {
+      if (isAndroid) {
+        let that = this
         iframe.src = 'uploadimage://album/100_100'
-        window.__newsapp_upload_image_done = function (r) {
-          img.src = r
+        window.__newsapp_upload_image_done = (r) => {
+          that.model.header = r
         }
-      }else {
-        inputFile.onchange = function () {
-          var file = this.files[0]
-          if (file && /image\/\w+/.test(file.type) ) {
-            iosupload.submit()
-          }
-        }
-        inputFile.click()
       }
     }
   }

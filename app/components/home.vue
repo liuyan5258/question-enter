@@ -4,12 +4,12 @@
       <div class="form-title">基本信息（必填）</div>
       <div v-if="isfocus" transition="warn">
         <span class="tip-icon"></span>
-        <span>{{errorMsg}}</span>
+        <span>{{ errorMsg }}</span>
       </div>
       <onestep v-if="step == 1" :myform="myform"></onestep>
       <twostep v-if="step == 2" :myform="myform"></twostep>
     </form>
-    <pre>{{ myform | json}}</pre>
+    <pre>{{ myform | json }}</pre>
   </div>
 </template> 
 
@@ -30,8 +30,8 @@ export default {
     twostep
   },
   methods: {
-    onSubmit: function () {
-      if(this.myform.$valid) {
+    onSubmit() {
+      if (this.myform.$valid) {
         this.step = 2
       }
       console.log(this.myform.$valid);
