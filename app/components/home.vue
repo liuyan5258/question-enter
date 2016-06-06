@@ -1,6 +1,7 @@
 <template> 
   <div class="m-body-wrap">
     <iframe id="iframe" style="display: none !important;"></iframe>
+    <iframe id="loginIframe" style="display: none" name="login"></iframe>
     <form name="myform" class="form-body">
       <div class="form-title">基本信息（必填）</div>
       <div v-if="isError" transition="warn">
@@ -27,11 +28,38 @@ export default {
       errorMsg: ''
     }
   },
+  methods: {
+    getCookie(sKey) {
+      return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null
+    },
+    doVerifyCookie() {
+      let S_INFO = this.getCookie('S_INFO')
+      let P_INFO = this.getCookie('P_INFO') 
+      S_INFO = S_INFO && S_INFO.split('|')
+      P_INFO = P_INFO && P_INFO.split('|')
+      return (S_INFO && (P_INFO[2]!='2'))
+    }
+  },
   ready() {
     // 获取账户通行证
-    window.location.href = "userinfo://"
-    window.__newsapp_userinfo_done = function(r) {
-      this.myform.specialistAccount = r.name
+    const iframe = document.querySelector('#loginIframe')
+    const that = this
+    window.__newsapp_userinfo_done = function(rs){
+      if (rs) {
+        that.myform.specialistAccount = rs.name
+        if (! this.doVerifyCookie()) {
+          iframe.src = 'login://'
+        }
+      } else {
+        iframe.src = 'login://'
+      }
+    }
+    window.onload = function(){
+      setTimeout(function(){
+        if (navigator.userAgent.match(/NewsApp/ig)) {
+          iframe.src = 'userinfo://'
+        }
+      },500)
     }
   },
   components: { 

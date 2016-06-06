@@ -1,6 +1,6 @@
 <template>
   <div class="form-step2">
-    <div class="form-question-title" :class="{ 'red' : borderClass == 'expertAlias'}">
+    <div class="form-question-title" :class="{ 'red' : borderClass == 'expertAlias' }">
       <label>问吧标题</label>
       <textarea rows="3" v-model="expertAlias" name="expertAlias" @input="isValidAlias" placeholder="请输入20-40字的问吧标题例如：我是专栏作家xx，关于哲学、社会学和时事热点的问题，问我吧！" autocomplete="off"></textarea>
     </div>
@@ -8,12 +8,12 @@
       <label>问吧类别</label>
       <select name="classification" v-model="classification" class="question-type">
         <option v-for="item in items" :value="item.id" >
-          {{item.name}}
+          {{ item.name }}
         </option>
       </select>
     </div>
     <h3 class="form-certificate">给小编留言（选填）</h3>
-    <div class="form-board" :class="{ 'red' : borderClass == 'specialistMessage'}">
+    <div class="form-board" :class="{ 'red' : borderClass == 'specialistMessage' }">
       <textarea rows="3" name="specialistMessage" v-model="specialistMessage" @input="isMessage" placeholder="详细介绍自己擅长的话题，以及可以作答的时间，能够帮助你更快地通过审核。内容不超过800字。" autocomplete="off"></textarea>
     </div>
     <h3 class="form-certificate">问吧封面（选填）</h3>
@@ -21,7 +21,7 @@
       <input type="file" accept="image/*" id="ios-header-pic" @change="iosUpload"/>
       <span class="close" v-if="isClosed" @click.stop="closed"></span>
     </div>
-    <button class="f-step js-submit-btn" :style="{background: _isValid ? '#df3031' : '#b0b0b0'}" @click.prevent="conmit">提交</button>
+    <button class="f-step js-submit-btn" :style="{ background: _isValid ? '#df3031' : '#b0b0b0' }" @click.prevent="conmit">提交</button>
   </div>
 </template>
 <script>
@@ -30,16 +30,16 @@ export default {
   data () {
     return {
       expertAlias: '',
-      classification: 'entertainment',
       specialistMessage: '',
       expertPicurl: '',
       items: '',
+      borderClass: '',
+      isClosed: false,
+      classification: 'entertainment',
       coverStyle: {
         backgroundImage: 'url(http://t.c.m.163.com/newsapp/default_header.png)',
         backgroundSize: '1.3rem'
-      },
-      isClosed: false,
-      borderClass: ''
+      }
     }
   },
   ready() {

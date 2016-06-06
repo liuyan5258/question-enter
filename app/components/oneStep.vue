@@ -5,23 +5,23 @@
       <input type="file" accept="image/*" id="ios-header-pic" @change="iosUpload"/>
       <img src="http://t.c.m.163.com/newsapp/default_header.png" class="headerPic" @click="uploadPhoto"/>
     </div>
-    <div :class="{ 'red' : borderClass == 'specialistName'}">
+    <div :class="{ 'red' : borderClass == 'specialistName' }">
       <label>申请人姓名</label>
       <input type="text" v-model="specialistName" @input="isValidName" placeholder="不超过10个字" name="specialistName" autocomplete="off"/>
     </div>
-    <div :class="{ 'red' : borderClass == 'specialistTitle'}">
+    <div :class="{ 'red' : borderClass == 'specialistTitle' }">
       <label>申请人职业</label>
       <input type="text" v-model="specialistTitle" @input="isValidTitle" placeholder="请填写20字以内的职业名称" name="specialistTitle" autocomplete="off"/>
     </div>
-    <div :class="{ 'red' : borderClass == 'specialistContact'}">
+    <div :class="{ 'red' : borderClass == 'specialistContact' }">
       <label>联系方式</label>
       <input type="text" v-model="specialistContact" @input="isValidContact" placeholder="手机号码或邮箱地址均可" name="specialistContact" autocomplete="off"/>
     </div>
-    <div class="form-textarea" :class="{ 'red' : borderClass == 'specialistDescription'}">
+    <div class="form-textarea" :class="{ 'red' : borderClass == 'specialistDescription' }">
       <label>个人介绍</label>
       <textarea rows="7" v-model="specialistDescription" @input="isValidDesc" placeholder="请输入不超过200字的个人介绍" name="specialistDescription" id="introduce" autocomplete="off"></textarea>
     </div>
-    <button class="f-step js-next-step" :style="{background: _isValid ? '#df3031' : '#b0b0b0'}" @click.prevent="nextStep">下一步</button> 
+    <button class="f-step js-next-step" :style="{ background: _isValid ? '#df3031' : '#b0b0b0' }" @click.prevent="nextStep">下一步</button> 
   </div>
 </template>
 <script>
