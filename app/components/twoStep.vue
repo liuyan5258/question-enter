@@ -99,7 +99,7 @@ export default {
       if (!!isAndriod) {
         const iframe = this.$parent.$el.querySelector('#iframe')
         const that = this
-        iframe.src = 'uploadimage://album/100_100'
+        iframe.src = 'uploadimage://album/750_420'
         window.__newsapp_upload_image_done = function(r) {
           that.expertPicurl = r
           that.coverStyle = {
@@ -115,6 +115,7 @@ export default {
     },
 
     iosUpload() {
+      document.querySelector('.cover').style.backgroundImage = 'url(http://t.c.m.163.com/ly/question_enter/loading.gif)'
       const file = this.$el.querySelector('#ios-header-pic').files[0]
       const formData = new FormData()
       formData.append('expertPicurl', file)
@@ -165,7 +166,7 @@ export default {
     .form-question-title {
       height: 2rem;
       textarea {
-        width: 4.75rem;
+        width: 4.6rem;
       }
     }
     .type-option {

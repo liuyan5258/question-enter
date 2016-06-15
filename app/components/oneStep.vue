@@ -19,7 +19,7 @@
     </div>
     <div class="form-textarea" :class="{ 'red' : borderClass == 'specialistDescription' }">
       <label>个人介绍</label>
-      <textarea rows="7" v-model="specialistDescription" @input="isValidDesc" placeholder="请输入不超过200字的个人介绍" name="specialistDescription" id="introduce" autocomplete="off"></textarea>
+      <textarea v-model="specialistDescription" @input="isValidDesc" placeholder="请输入不超过200字的个人介绍" name="specialistDescription" id="introduce" autocomplete="off"></textarea>
     </div>
     <button class="f-step js-next-step" :style="{ background: _isValid ? '#df3031' : '#b0b0b0' }" @click.prevent="nextStep">下一步</button> 
   </div>
@@ -59,7 +59,7 @@ export default {
         parent.isError = true
         this.borderClass = 'specialistName'
         parent.errorMsg = '用户名不能为空'
-      } else if (!/^[a-zA-Z]{1,10}|[\u4e00-\u9fa5]{1,10}$/.test( this.specialistName )) {
+      } else if (!/(^[a-zA-Z]{1,10}$)|(^[\u4e00-\u9fa5]{1,10}$)/.test( this.specialistName )) {
         parent.isError = true
         this.borderClass = 'specialistName'
         parent.errorMsg = '请输入10个字以内中文或英文的用户名'
@@ -86,7 +86,7 @@ export default {
     },
 
     isValidContact() {
-      const isContact = /(^(([0\+]\d{2,3}-)?(0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$)|(^0{0,1}1[3|4|5|6|7|8|9][0-9]{9}$)|(^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$)/.test( this.specialistContact )
+      const isContact = /(^[a-zA-Z0-9]{1}([\._a-zA-Z0-9-]+)(\.[_a-zA-Z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+){1,3}$)|(^((\(\d{2,3}\))|(\d{3}\-))?1(3|4|5|7|8)\d{9}$)/.test( this.specialistContact )
       let parent = this.$parent
       if (this.specialistContact == '') {
         parent.isError = true
@@ -128,7 +128,7 @@ export default {
       const that = this
       if (isAndriod) {
         const iframe = this.$parent.$el.querySelector('#iframe')
-        iframe.src = 'uploadimage://album/100_100'
+        iframe.src = 'uploadimage://album/160_160'
         window.__newsapp_upload_image_done = function(r) {
           that.specialistPicurl = r
           document.querySelector('.headerPic').src = r
@@ -141,12 +141,13 @@ export default {
 
     // ios上传头像
     iosUpload() {
+      document.querySelector('.headerPic').src = 'http://t.c.m.163.com/ly/question_enter/loading.gif'
       const file = this.$el.querySelector('#ios-header-pic').files[0]
       const formData = new FormData()
       formData.append('specialistPicurl', file)
       this.$http.post('http://upfile.m.163.com/nos/upload/pub', formData).then(function(data, status, request){
-        this.specialistPicurl = data.data.url
-        this.$el.querySelector('.headerPic').src = data.data.url
+        this.specialistPicurl = `${data.data.url}?imageView&thumbnail=160y160`
+        this.$el.querySelector('.headerPic').src = `${data.data.url}?imageView&thumbnail=160y160`
       })
     },
 

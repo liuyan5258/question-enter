@@ -23,7 +23,7 @@ export default {
       myform: {
         specialistAccount: ''
       },
-      step: 1,
+      step: 2,
       isError: false,
       errorMsg: ''
     }
@@ -111,8 +111,9 @@ export default {
     textarea {
       overflow-x: hidden;
       padding-top: .25rem;
+      padding-right: .15rem;
       height: 3.8rem;
-      width: 4.43rem;
+      width: 4.28rem;
       line-height: .46rem;
       font-size: .28rem;
       color: #606060;
